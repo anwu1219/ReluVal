@@ -507,7 +507,7 @@ int direct_run_check(struct NNet *nnet,\
 
     if (adv_found) {
         pthread_mutex_unlock(&lock);
-
+	printf("Number of leaves: %d\n", leaf_num);
         return 0;
     }
 
@@ -590,12 +590,14 @@ int direct_run_check(struct NNet *nnet,\
                             split_feature);
     }
     else if (!isOverlap) {
-    pthread_mutex_lock(&lock);
+      pthread_mutex_lock(&lock);
 
-        avg_depth -= (avg_depth) / AVG_WINDOW;
-        avg_depth += depth / AVG_WINDOW;
-
-    pthread_mutex_unlock(&lock);
+      avg_depth -= (avg_depth) / AVG_WINDOW;
+      avg_depth += depth / AVG_WINDOW;
+      
+      leaf_num++;	
+	
+      pthread_mutex_unlock(&lock);
 
         //printf("%f, %f\n", total_avg_depth,avg_depth);
 
@@ -641,7 +643,7 @@ int direct_run_check(struct NNet *nnet,\
 
         printf("] %0.2f%%\n", 100.00);
     }
-
+    printf("Number of leaves: %d\n", leaf_num);
     return isOverlap;
 
 }
